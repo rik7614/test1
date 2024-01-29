@@ -26,7 +26,7 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::625698817247:role/githubaction-oidc
+          role-to-assume: arn:aws:iam::625698817247:role/oicd-role-for-github
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ env.AWS_REGION }}
       #- name: Sts GetCallerIdentity

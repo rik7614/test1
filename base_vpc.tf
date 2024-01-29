@@ -13,9 +13,9 @@ provider "aws" {
   region = "us-west-2"
 }
 
-#module "vpc" {
-#  source = "git::https://github.com/rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork.git?ref=v0.12.8"
-#
-#  name = "MyVPC"
-#}
+module "vpc" {
+  source = "git::https://github.com/rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork.git?ref=v0.12.8"
+
+  name = "RikVPC"
+}
 
