@@ -1,0 +1,37 @@
+name: Rackspace - Demo Base Network deployment
+run-name: Demo-VPC
+on: [push]
+
+env:
+  
+  AWS_REGION : us-east-1 #Change to reflect your Region
+
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkoutm: 
+
+jobs:
+  Setup-Terraform: 
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -s -qL -o terraform_install.zip https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
+      - run: sudo unzip terraform_install.zip -d /usr/bin
+      - run: sudo chmod +x /usr/bin/terraform
+      - run: terraform --version 
+      - run: echo "terraform installed"
+      - name: Check out repo
+        uses: actions/checkout@v4
+      - run: "ls -al"
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::805794148056:role/GitHubAction-AssumeRoleWithAction
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ env.AWS_REGION }}
+      #- name: Sts GetCallerIdentity
+      #  run: |
+      #    aws sts get-caller-identity
+      - run: terraform init 
+      - run: terraform plan -out plan.out
+      - run: terraform apply -auto-approve "plan.out"
